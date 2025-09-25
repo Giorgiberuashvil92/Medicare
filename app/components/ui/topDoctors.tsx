@@ -19,7 +19,6 @@ const TopDoctors = () => {
 
   const filteredDoctors = useMemo(() => {
     if (selectedFilter === 1) {
-      // "All Doctors" - show all doctors
       return doctors;
     } else {
       // Filter by specialization
@@ -66,7 +65,7 @@ const TopDoctors = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {filteredDoctors.map((doctor) => (
+        {filteredDoctors.slice(0, 4).map((doctor) => (
           <TouchableOpacity
             key={doctor.id}
             style={styles.doctorCard}
@@ -94,7 +93,9 @@ const TopDoctors = () => {
                 <View style={styles.ratingLeft}>
                   <Ionicons name="star" size={16} color="#FFD700" />
                   <Text style={styles.doctorRating}>{doctor.rating}</Text>
-                  <Text style={styles.doctorReviews}>({doctor.reviews})</Text>
+                  <Text style={styles.doctorReviews}>
+                    ({doctor.reviewCount})
+                  </Text>
                 </View>
                 <TouchableOpacity style={styles.favoriteButton}>
                   <Ionicons name="heart-outline" size={20} color="#D4D4D4" />

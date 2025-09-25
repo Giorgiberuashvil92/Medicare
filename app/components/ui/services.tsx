@@ -10,27 +10,27 @@ const Services = () => {
         <View style={{ flexDirection: "row", gap: 12 }}>
           <View style={styles.serviceCard}>
             <Image
-              style={{ width: 100, height: 100, borderRadius: 8 }}
+              style={{ width: 97, height: 97, borderRadius: 8 }}
               source={require("../../../assets/images/test.png")}
             />
             <Text style={styles.serviceTitle}>Instant Consultation </Text>
-            <Text style={styles.serviceTitle}>Start from $50</Text>
+            <Text style={styles.serviceDescription}>Start from $50</Text>
           </View>
           <View style={styles.serviceCard}>
             <Image
-              style={{ width: 100, height: 100, borderRadius: 8 }}
+              style={{ width: 97, height: 97, borderRadius: 8 }}
               source={require("../../../assets/images/test.png")}
             />
             <Text style={styles.serviceTitle}>Book a Specialist</Text>
-            <Text style={styles.serviceTitle}>Start from $100</Text>
+            <Text style={styles.serviceDescription}>Start from $100</Text>
           </View>
           <View style={styles.serviceCard}>
             <Image
-              style={{ width: 100, height: 100, borderRadius: 8 }}
+              style={{ width: 97, height: 97, borderRadius: 8 }}
               source={require("../../../assets/images/test.png")}
             />
             <Text style={styles.serviceTitle}>Order Medicine</Text>
-            <Text style={styles.serviceTitle}>Delivery in 1 hour</Text>
+            <Text style={styles.serviceDescription}>Delivery in 1 hour</Text>
           </View>
         </View>
       </ScrollView>
@@ -54,17 +54,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 8,
     alignItems: "center",
-    gap: 12,
+    gap: 8,
   },
   serviceTitle: {
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: "Poppins-SemiBold",
-    color: "#333333",
+    color: "#0F172A",
   },
   serviceDescription: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#333333",
+    fontSize: 12,
+    fontFamily: "Poppins-SemiBold",
+    color: "#64748B",
   },
 });
 

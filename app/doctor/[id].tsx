@@ -2,7 +2,7 @@ import { doctors } from "@/assets/data/doctors";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -11,10 +11,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AppointmentScheduler from "../components/ui/appointmentScheduler";
 
 const DoctorDetail = () => {
   const { id } = useLocalSearchParams();
   const doctor = doctors.find((d) => d.id === parseInt(id as string));
+  const [showAppointmentScheduler, setShowAppointmentScheduler] =
+    useState(false);
 
   if (!doctor) {
     return (
@@ -71,7 +74,7 @@ const DoctorDetail = () => {
           </View>
           <View style={styles.statItem}>
             <Ionicons name="chatbubbles" size={24} color="#333333" />
-            <Text style={styles.statNumber}>{doctor.reviews}+</Text>
+            <Text style={styles.statNumber}>{doctor.reviewCount}+</Text>
             <Text style={styles.statLabel}>Reviews</Text>
           </View>
         </View>
@@ -98,14 +101,32 @@ const DoctorDetail = () => {
             <Text style={styles.readMore}>Read More</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Appointment Scheduler - Show when button is pressed */}
+        {showAppointmentScheduler && (
+          <View style={styles.appointmentSection}>
+            <Text style={styles.appointmentTitle}>Book Appointment</Text>
+            <AppointmentScheduler
+              workingHours={doctor.workingHours || "Mon - Fri, 9 AM - 6 PM"}
+              availability={doctor.availability || []}
+              totalReviews={doctor.totalReviews || 0}
+              reviews={Array.isArray(doctor.reviews) ? doctor.reviews : []}
+            />
+          </View>
+        )}
       </ScrollView>
 
-      {/* Make Appointment Button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.appointmentButton}>
-          <Text style={styles.buttonText}>Make Appointments</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Make Appointment Button - Hide when scheduler is shown */}
+      {!showAppointmentScheduler && (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.appointmentButton}
+            onPress={() => setShowAppointmentScheduler(true)}
+          >
+            <Text style={styles.buttonText}>Make Appointments</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -136,7 +157,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   profileImageContainer: {
-    marginTop: 40,
+    marginTop: 30,
     width: 120,
     height: 120,
     borderRadius: 60,
@@ -285,5 +306,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
+  },
+  schedulerHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E5EA",
+  },
+  schedulerTitle: {
+    fontSize: 18,
+    fontFamily: "Poppins-SemiBold",
+    color: "#333333",
+    marginLeft: 16,
+  },
+  appointmentSection: {
+    marginTop: -50,
+    marginBottom: 20,
+  },
+  appointmentTitle: {
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
+    color: "#333333",
+    marginBottom: 16,
+    textAlign: "center",
   },
 });

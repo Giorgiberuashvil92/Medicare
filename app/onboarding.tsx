@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   Dimensions,
   StatusBar,
   StyleSheet,
@@ -36,15 +37,51 @@ const onboardingData = [
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Simple animation values
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const buttonScale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    // Simple slide in animation
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [currentIndex, slideAnim]);
+
   const handleNext = () => {
+    // Simple button press
+    Animated.sequence([
+      Animated.timing(buttonScale, {
+        toValue: 0.9,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(buttonScale, {
+        toValue: 1,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
     if (currentIndex < onboardingData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      // Simple slide out
+      Animated.timing(slideAnim, {
+        toValue: -width,
+        duration: 150,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentIndex(currentIndex + 1);
+        slideAnim.setValue(width);
+      });
     } else {
       handleGetStarted();
     }
   };
 
   const handleGetStarted = async () => {
+    // Simple transition to main app
     await AsyncStorage.setItem("hasCompletedOnboarding", "true");
     router.replace("/(tabs)");
   };
@@ -60,38 +97,54 @@ export default function OnboardingScreen() {
         translucent
       />
 
-      {/* Gradient Background */}
-      <LinearGradient
-        colors={["#8B5CF6", "#06B6D4"]}
-        style={styles.gradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-      >
-        <SafeAreaView style={styles.safeArea}>
-          {/* Main Content */}
-          <View style={styles.content}>
-            {/* Glassmorphism Card with Button Cutout */}
-            <View style={styles.cardContainer}>
-              {/* Main Card */}
-              <View style={styles.card}>
-                <Text style={styles.title}>{currentData.title}</Text>
-                <Text style={styles.description}>
-                  {currentData.description}
-                </Text>
-              </View>
+      {/* Background Image */}
+      <Image
+        source={require("../assets/images/backgrounds/onboarding.png")}
+        style={styles.backgroundImage}
+        contentFit="cover"
+      />
+      <SafeAreaView style={styles.safeArea}>
+        {/* Main Content */}
+        <View style={styles.content}>
+          {/* Vector Background Card */}
+          <Animated.View
+            style={[
+              styles.cardContainer,
+              {
+                transform: [{ translateX: slideAnim }],
+              },
+            ]}
+          >
+            {/* Vector Background Image */}
+            <Image
+              source={require("../assets/images/icons/Vector.png")}
+              style={styles.vectorBackground}
+              contentFit="contain"
+            />
 
-              {/* Button positioned in the cutout */}
+            {/* Content Overlay */}
+            <View style={styles.contentOverlay}>
+              <Text style={styles.title}>{currentData.title}</Text>
+              <Text style={styles.description}>{currentData.description}</Text>
+            </View>
+
+            {/* Button positioned in the cutout */}
+            <Animated.View
+              style={{
+                transform: [{ scale: buttonScale }],
+              }}
+            >
               <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
                 <Ionicons
-                  name={isLastScreen ? "checkmark" : "chevron-forward"}
+                  name={isLastScreen ? "checkmark" : "arrow-forward"}
                   size={24}
                   color="#FFFFFF"
                 />
               </TouchableOpacity>
-            </View>
-          </View>
-        </SafeAreaView>
-      </LinearGradient>
+            </Animated.View>
+          </Animated.View>
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
@@ -100,8 +153,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
-    flex: 1,
+  backgroundImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: "100%",
+    height: "100%",
   },
   safeArea: {
     flex: 1,
@@ -153,34 +212,36 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     width: width * 0.9,
+    height: 220,
   },
-  card: {
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
-    borderRadius: 20,
-    padding: 30,
-    paddingBottom: 50,
+  vectorBackground: {
     width: "100%",
-    backdropFilter: "blur(10px)",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
-    elevation: 10,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    height: "100%",
+    position: "absolute",
+    bottom: 0,
+  },
+  contentOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+    paddingTop: 60,
+    paddingBottom: 80,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontFamily: "Poppins-Bold",
     color: "#FFFFFF",
     textAlign: "center",
     marginBottom: 16,
-    lineHeight: 38,
+    lineHeight: 34,
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   description: {
     fontSize: 16,
@@ -188,14 +249,18 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "center",
     lineHeight: 24,
-    opacity: 0.9,
+    opacity: 0.95,
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   nextButton: {
     position: "absolute",
-    bottom: -30,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    bottom: -260,
+    right: -35,
+    width: 72,
+    height: 72,
+    borderRadius: "50%",
     backgroundColor: "#06B6D4",
     justifyContent: "center",
     alignItems: "center",
