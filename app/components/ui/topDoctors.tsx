@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -15,6 +15,34 @@ import DoctorFilters from "../shared/doctorFilters";
 import SeeAll from "../shared/seeAll";
 
 const TopDoctors = () => {
+  const [selectedFilter, setSelectedFilter] = useState(1);
+
+  const filteredDoctors = useMemo(() => {
+    if (selectedFilter === 1) {
+      // "All Doctors" - show all doctors
+      return doctors;
+    } else {
+      // Filter by specialization
+      const filterMap: { [key: number]: string } = {
+        2: "Neurology",
+        3: "Cardiology",
+        4: "Gynecology",
+        5: "Pediatrics",
+        6: "Allergy",
+        7: "Dentist",
+        8: "Urology",
+        9: "Gastrology",
+      };
+
+      const filterSpecialization = filterMap[selectedFilter];
+      return doctors.filter((doctor) =>
+        doctor.specialization
+          .toLowerCase()
+          .includes(filterSpecialization.toLowerCase())
+      );
+    }
+  }, [selectedFilter]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -29,14 +57,26 @@ const TopDoctors = () => {
       >
         <SeeAll title="Top Doctors" />
       </TouchableOpacity>
-      <DoctorFilters />
+      <DoctorFilters
+        selectedFilter={selectedFilter}
+        onFilterChange={setSelectedFilter}
+      />
       <ScrollView
         style={styles.doctorList}
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {doctors.map((doctor) => (
-          <TouchableOpacity key={doctor.id} style={styles.doctorCard}>
+        {filteredDoctors.map((doctor) => (
+          <TouchableOpacity
+            key={doctor.id}
+            style={styles.doctorCard}
+            onPress={() =>
+              router.push({
+                pathname: "/doctor/[id]",
+                params: { id: doctor.id.toString() },
+              })
+            }
+          >
             <View style={styles.imageContainer}>
               <Image source={doctor.image} style={styles.doctorImage} />
               {doctor.isActive && (

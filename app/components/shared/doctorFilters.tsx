@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,6 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+interface DoctorFiltersProps {
+  selectedFilter: number;
+  onFilterChange: (filterId: number) => void;
+}
 
 const doctorFilters = [
   {
@@ -46,9 +51,10 @@ const doctorFilters = [
   },
 ];
 
-const DoctorFilters = () => {
-  const [activeFilter, setActiveFilter] = useState(1);
-
+const DoctorFilters: React.FC<DoctorFiltersProps> = ({
+  selectedFilter,
+  onFilterChange,
+}) => {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -61,14 +67,14 @@ const DoctorFilters = () => {
             key={filter.id}
             style={[
               styles.filterButton,
-              activeFilter === filter.id && styles.activeFilterButton,
+              selectedFilter === filter.id && styles.activeFilterButton,
             ]}
-            onPress={() => setActiveFilter(filter.id)}
+            onPress={() => onFilterChange(filter.id)}
           >
             <Text
               style={[
                 styles.filterText,
-                activeFilter === filter.id && styles.activeFilterText,
+                selectedFilter === filter.id && styles.activeFilterText,
               ]}
             >
               {filter.name}
