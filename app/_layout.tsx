@@ -37,6 +37,7 @@ export default function RootLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="onboarding" />
       <Stack.Screen name="departments" />
+      <Stack.Screen name="profile" />
       <Stack.Screen name="(tabs)" />
     </Stack>
   );

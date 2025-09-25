@@ -7,11 +7,11 @@ import {
   View,
 } from "react-native";
 
-export default function RecordsScreen() {
+export default function Medicine() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>სამედიცინო ჩანაწერები</Text>
+        <Text style={styles.title}>მედიკამენტები</Text>
         <TouchableOpacity style={styles.addButton}>
           <Ionicons name="add" size={24} color="#007AFF" />
         </TouchableOpacity>
@@ -20,30 +20,30 @@ export default function RecordsScreen() {
       <View style={styles.content}>
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
-            <Ionicons name="document-text" size={30} color="#007AFF" />
+            <Ionicons name="medical" size={30} color="#FF3B30" />
             <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>ჩანაწერები</Text>
+            <Text style={styles.statLabel}>აქტიური</Text>
           </View>
           <View style={styles.statCard}>
-            <Ionicons name="calendar" size={30} color="#34C759" />
+            <Ionicons name="time" size={30} color="#FF9500" />
             <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>ვიზიტები</Text>
+            <Text style={styles.statLabel}>დღიური</Text>
           </View>
           <View style={styles.statCard}>
-            <Ionicons name="analytics" size={30} color="#FF9500" />
+            <Ionicons name="checkmark-circle" size={30} color="#34C759" />
             <Text style={styles.statNumber}>0</Text>
-            <Text style={styles.statLabel}>ანალიზები</Text>
+            <Text style={styles.statLabel}>მიღებული</Text>
           </View>
         </View>
 
         <View style={styles.placeholderCard}>
-          <Ionicons name="document-text-outline" size={80} color="#C7C7CC" />
-          <Text style={styles.placeholderText}>ჯერ არ არის ჩანაწერები</Text>
+          <Ionicons name="medical-outline" size={80} color="#C7C7CC" />
+          <Text style={styles.placeholderText}>ჯერ არ არის მედიკამენტები</Text>
           <Text style={styles.placeholderSubtext}>
-            დაამატეთ პირველი სამედიცინო ჩანაწერი
+            დაამატეთ პირველი მედიკამენტი
           </Text>
-          <TouchableOpacity style={styles.addRecordButton}>
-            <Text style={styles.addRecordText}>ჩანაწერის დამატება</Text>
+          <TouchableOpacity style={styles.addMedicationButton}>
+            <Text style={styles.addMedicationText}>მედიკამენტის დამატება</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 30,
   },
-  addRecordButton: {
-    backgroundColor: "#007AFF",
+  addMedicationButton: {
+    backgroundColor: "#FF3B30",
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 25,
   },
-  addRecordText: {
+  addMedicationText: {
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",

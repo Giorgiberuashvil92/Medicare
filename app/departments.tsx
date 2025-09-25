@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -9,64 +10,69 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import CommonSymptoms from "./components/ui/commonSymptoms";
 
 const DepartmentsScreen = () => {
   const departments = [
     {
       name: "Neurology",
-      icon: "brain",
-      description: "Brain and nervous system specialists",
+      imageUrl: require("../assets/images/icons/brain1.png"),
+      bgColor: "#E3F2FD",
     },
     {
       name: "Cardiology",
-      icon: "brain",
-      description: "Heart and cardiovascular specialists",
+      imageUrl: require("../assets/images/icons/cardiology.png"),
+      bgColor: "#FFEBEE",
     },
     {
       name: "Gynecology",
-      icon: "brain",
-      description: "Women's health specialists",
+      imageUrl: require("../assets/images/icons/pregnant.png"),
+      bgColor: "#F3E5F5",
     },
     {
       name: "Pediatrics",
-      icon: "brain",
-      description: "Children's health specialists",
+      imageUrl: require("../assets/images/icons/baby.png"),
+      bgColor: "#E8F5E8",
     },
     {
       name: "Allergy",
-      icon: "brain",
-      description: "Allergy and immunology specialists",
+      imageUrl: require("../assets/images/icons/allergy.png"),
+      bgColor: "#FFF3E0",
     },
-    { name: "Dentist", icon: "brain", description: "Dental care specialists" },
+    {
+      name: "Dentist",
+      imageUrl: require("../assets/images/icons/dendist.png"),
+      bgColor: "#E0F2F1",
+    },
     {
       name: "Urology",
-      icon: "brain",
-      description: "Urinary system specialists",
+      imageUrl: require("../assets/images/icons/urology.png"),
+      bgColor: "#E1F5FE",
     },
     {
       name: "Gastrology",
-      icon: "brain",
-      description: "Digestive system specialists",
+      imageUrl: require("../assets/images/icons/gastrology.png"),
+      bgColor: "#FCE4EC",
     },
     {
       name: "Dermatology",
-      icon: "brain",
-      description: "Skin care specialists",
+      imageUrl: require("../assets/images/icons/cardiology.png"),
+      bgColor: "#FFF8E1",
     },
     {
       name: "Orthopedics",
-      icon: "brain",
-      description: "Bone and joint specialists",
+      imageUrl: require("../assets/images/icons/brain1.png"),
+      bgColor: "#E8EAF6",
     },
     {
       name: "Ophthalmology",
-      icon: "brain",
-      description: "Eye care specialists",
+      imageUrl: require("../assets/images/icons/allergy.png"),
+      bgColor: "#F1F8E9",
     },
     {
-      name: "Psychiatry",
-      icon: "brain",
-      description: "Mental health specialists",
+      name: "Psychology",
+      imageUrl: require("../assets/images/icons/phycatry.png"),
+      bgColor: "#FCE4EC",
     },
   ];
 
@@ -79,24 +85,39 @@ const DepartmentsScreen = () => {
         >
           <Ionicons name="arrow-back" size={24} color="#333333" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>All Departments</Text>
+        <Text style={styles.headerTitle}>Departments</Text>
         <View style={styles.placeholder} />
       </View>
-
+      <Text
+        style={{
+          padding: 24,
+          fontSize: 16,
+          fontFamily: "Poppins-SemiBold",
+          color: "#333333",
+        }}
+      >
+        Departments
+      </Text>
       <ScrollView style={styles.content}>
         <View style={styles.grid}>
-          {departments.map((dept, index) => (
+          {departments.slice(0, 12).map((dept, index) => (
             <TouchableOpacity key={index} style={styles.departmentCard}>
-              <View style={styles.iconContainer}>
-                <Ionicons name={dept.icon as any} size={40} color="#007AFF" />
+              <View
+                style={[
+                  styles.iconContainer,
+                  { backgroundColor: dept.bgColor || "#E3F2FD" },
+                ]}
+              >
+                <Image
+                  source={dept.imageUrl}
+                  style={{ width: 48, height: 48 }}
+                />
               </View>
               <Text style={styles.departmentName}>{dept.name}</Text>
-              <Text style={styles.departmentDescription}>
-                {dept.description}
-              </Text>
             </TouchableOpacity>
           ))}
         </View>
+        <CommonSymptoms />
       </ScrollView>
     </SafeAreaView>
   );
@@ -113,9 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#FFFFFF",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5EA",
+    backgroundColor: "#F2F2F7",
   },
   backButton: {
     padding: 8,
@@ -130,7 +149,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 6,
+    backgroundColor: "#F2F2F7",
   },
   grid: {
     flexDirection: "row",
@@ -138,36 +158,24 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   departmentCard: {
-    width: "48%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    width: "30%",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    marginBottom: 16,
+    padding: 4,
   },
   iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#E3F2FD",
+    width: 72,
+    height: 72,
+    borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 8,
   },
   departmentName: {
-    fontSize: 16,
-    fontFamily: "Poppins-SemiBold",
+    fontSize: 12,
+    fontFamily: "Poppins-Medium",
     color: "#333333",
     textAlign: "center",
-    marginBottom: 4,
   },
   departmentDescription: {
     fontSize: 12,

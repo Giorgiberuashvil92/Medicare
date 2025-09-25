@@ -4,6 +4,7 @@ import Departments from "../components/ui/departments";
 import Header from "../components/ui/header";
 import Search from "../components/ui/search";
 import Services from "../components/ui/services";
+import TopDoctors from "../components/ui/topDoctors";
 
 export default function HomeScreen() {
   return (
@@ -13,6 +14,7 @@ export default function HomeScreen() {
         <Search />
         <Services />
         <Departments />
+        <TopDoctors />
       </SafeAreaView>
     </ScrollView>
   );

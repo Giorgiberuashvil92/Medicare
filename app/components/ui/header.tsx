@@ -1,12 +1,17 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const Header = () => {
+  const handleProfilePress = () => {
+    router.push("/profile");
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <TouchableOpacity style={styles.header} onPress={handleProfilePress}>
         <Image
           style={{ width: 44, height: 44, borderRadius: 100 }}
           source={require("../../../assets/images/test.png")}
@@ -16,10 +21,10 @@ const Header = () => {
             Hello!
           </Text>
           <Text style={{ fontFamily: "Poppins-SemiBold" }}>
-            Zenifer Aniston
+            Lazare Chkhartishvili
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <Ionicons name="notifications-outline" size={24} color="black" />
     </View>
   );

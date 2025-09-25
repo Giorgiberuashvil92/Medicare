@@ -1,4 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -24,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "მთავარი",
+          title: "Home",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
@@ -32,38 +34,41 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="records"
+        name="doctor"
         options={{
-          title: "ჩანაწერები",
+          headerShown: false,
+          title: "Doctor",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="document-text" size={size} color={color} />
+            <FontAwesome6 name="user-doctor" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="medications"
+        name="medicine"
         options={{
-          title: "მედიკამენტები",
+          title: "Medicine",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="medical" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="reminders"
+        name="appointment"
         options={{
-          title: "შეხსენებები",
+          title: "Appointment",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="alarm" size={size} color={color} />
+            <Ionicons name="calendar-outline" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="history"
         options={{
-          title: "პროფილი",
+          title: "History",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <AntDesign name="calendar" size={size} color={color} />
           ),
         }}
       />
