@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CommonSymptoms from "./components/ui/commonSymptoms";
+import TopDoctors from "./components/ui/topDoctors";
 
 const DepartmentsScreen = () => {
   const departments = [
@@ -118,6 +119,7 @@ const DepartmentsScreen = () => {
           ))}
         </View>
         <CommonSymptoms />
+        <TopDoctors />
       </ScrollView>
     </SafeAreaView>
   );

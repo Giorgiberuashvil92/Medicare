@@ -1,5 +1,7 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Banner from "../components/shared/banner";
+import HealthcareProducts from "../components/shared/healthcareProducts";
 import Departments from "../components/ui/departments";
 import Header from "../components/ui/header";
 import Search from "../components/ui/search";
@@ -15,6 +17,8 @@ export default function HomeScreen() {
         <Services />
         <Departments />
         <TopDoctors />
+        <Banner />
+        <HealthcareProducts />
       </SafeAreaView>
     </ScrollView>
   );

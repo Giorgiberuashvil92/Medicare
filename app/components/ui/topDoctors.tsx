@@ -2,6 +2,7 @@ import { doctors } from "@/assets/data/doctors";
 import { Ionicons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import React from "react";
 import {
   ScrollView,
@@ -16,7 +17,18 @@ import SeeAll from "../shared/seeAll";
 const TopDoctors = () => {
   return (
     <View style={styles.container}>
-      <SeeAll title="Top Doctors" />
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 8,
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+        onPress={() => router.push("/topdoctors")}
+      >
+        <SeeAll title="Top Doctors" />
+      </TouchableOpacity>
       <DoctorFilters />
       <ScrollView
         style={styles.doctorList}
