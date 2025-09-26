@@ -54,7 +54,7 @@ const TopDoctors = () => {
         }}
         onPress={() => router.push("/topdoctors")}
       >
-        <SeeAll title="Top Doctors" />
+        <SeeAll title="Top Rated Doctors" />
       </TouchableOpacity>
       <DoctorFilters
         selectedFilter={selectedFilter}
@@ -65,7 +65,7 @@ const TopDoctors = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {filteredDoctors.slice(0, 4).map((doctor) => (
+        {filteredDoctors.map((doctor) => (
           <TouchableOpacity
             key={doctor.id}
             style={styles.doctorCard}

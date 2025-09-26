@@ -175,11 +175,11 @@ const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F8F9FA",
+    flex: 1,
   },
+
   section: {
     backgroundColor: "#FFFFFF",
-    marginHorizontal: 16,
     marginVertical: 8,
     padding: 20,
     borderRadius: 12,

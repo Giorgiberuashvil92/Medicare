@@ -102,7 +102,6 @@ const DoctorDetail = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Appointment Scheduler - Show when button is pressed */}
         {showAppointmentScheduler && (
           <View style={styles.appointmentSection}>
             <Text style={styles.appointmentTitle}>Book Appointment</Text>
@@ -116,7 +115,6 @@ const DoctorDetail = () => {
         )}
       </ScrollView>
 
-      {/* Make Appointment Button - Hide when scheduler is shown */}
       {!showAppointmentScheduler && (
         <View style={styles.buttonContainer}>
           <TouchableOpacity

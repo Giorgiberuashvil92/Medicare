@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
   seeAll: {
     fontSize: 14,
     fontFamily: "Poppins-Medium",
-    color: "#007AFF",
+    color: "#20BEB8",
   },
 });
