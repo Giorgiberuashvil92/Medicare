@@ -115,6 +115,14 @@ export const doctors = [
         comment:
           "Outstanding service and expertise. Dr. Cook's approach to treatment is both modern and compassionate. Very satisfied with the care received.",
       },
+      {
+        id: 4,
+        reviewerName: "Albert Flores",
+        reviewDate: "8 Sept 2023",
+        rating: 5,
+        comment:
+          "Outstanding service and expertise. Dr. Cook's approach to treatment is both modern and compassionate. Very satisfied with the care received.",
+      },
     ],
   },
   {
@@ -287,5 +295,74 @@ export const doctors = [
     followUpFee: "$55",
     about:
       "Dr. James Thompson is a compassionate gynecologist specializing in women's health. He provides comprehensive care for women of all ages and is committed to promoting women's wellness.",
+  },
+  {
+    id: 9,
+    name: "Dr. Larry Wilson",
+    specialization: "Cardiology Specialist",
+    rating: 4.0,
+    reviewCount: 150,
+    isActive: true,
+    image: require("../images/doctors/doctor3.png"),
+    degrees: "MD, PhD(Cardiology)",
+    location: "City Medical Center, New York",
+    patients: "8500+",
+    experience: "8+ Years",
+    consultationFee: "$220",
+    followUpFee: "$50",
+    about:
+      "Dr. Larry Wilson is a renowned cardiologist with extensive experience in treating heart conditions. He has published numerous research papers and is recognized for his innovative treatment approaches.",
+    workingHours: "Mon - Fri, Morning 9 AM - Evening 7 PM",
+    availability: [
+      {
+        date: "2024-01-21",
+        dayOfWeek: "Mon",
+        timeSlots: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"],
+        isAvailable: true,
+      },
+      {
+        date: "2024-01-22",
+        dayOfWeek: "Tue",
+        timeSlots: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"],
+        isAvailable: true,
+      },
+      {
+        date: "2024-01-23",
+        dayOfWeek: "Wed",
+        timeSlots: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"],
+        isAvailable: true,
+      },
+      {
+        date: "2024-01-24",
+        dayOfWeek: "Thu",
+        timeSlots: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"],
+        isAvailable: true,
+      },
+      {
+        date: "2024-01-25",
+        dayOfWeek: "Fri",
+        timeSlots: ["9:00 AM", "10:00 AM", "11:00 AM", "2:00 PM", "3:00 PM"],
+        isAvailable: true,
+      },
+    ],
+    totalReviews: 89,
+    reviews: [
+      {
+        id: 1,
+        reviewerName: "Sarah Johnson",
+        reviewDate: "20 Sept 2023",
+        rating: 5,
+        comment:
+          "Dr. Zender is very knowledgeable and professional. He explained everything clearly and made me feel comfortable during the consultation.",
+      },
+      {
+        id: 2,
+        reviewerName: "Michael Chen",
+        reviewDate: "12 Sept 2023",
+        rating: 5,
+        comment:
+          "Excellent doctor with great bedside manner. The treatment plan was well explained and I'm very satisfied with the care.",
+      },
+    ],
   },
 ];

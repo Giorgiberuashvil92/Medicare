@@ -46,7 +46,7 @@ const TopDoctors = () => {
     const groups: { [key: string]: typeof doctors } = {};
 
     filteredDoctors.forEach((doctor) => {
-      const specialization = doctor.specialization.split(" ")[0]; // Get first word (e.g., "Cardiology" from "Cardiology Specialist")
+      const specialization = doctor.specialization.split(" ")[0];
       if (!groups[specialization]) {
         groups[specialization] = [];
       }
@@ -123,7 +123,14 @@ const TopDoctors = () => {
           <View key={specialization} style={styles.specializationSection}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>{specialization}</Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: "/doctors-list",
+                    params: { specialty: specialization },
+                  })
+                }
+              >
                 <Text style={styles.seeAllText}>See All</Text>
               </TouchableOpacity>
             </View>

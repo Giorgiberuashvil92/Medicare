@@ -40,6 +40,7 @@ export default function RootLayout() {
       <Stack.Screen name="register" />
       <Stack.Screen name="departments" />
       <Stack.Screen name="profile" />
+      <Stack.Screen name="doctors-list" />
       <Stack.Screen name="(tabs)" />
     </Stack>
   );
