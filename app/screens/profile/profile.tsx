@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ProfileScreen() {
   const handleResetOnboarding = async () => {
     await AsyncStorage.removeItem("hasCompletedOnboarding");
-    router.replace("/onboarding");
+    router.replace("/screens/auth/onboarding");
   };
 
   const handleGoBack = () => {
@@ -39,7 +39,7 @@ export default function ProfileScreen() {
             <View style={styles.profileImage}>
               {/* Profile picture placeholder */}
               <Image
-                source={require("../assets/images/test.png")}
+                source={require("../../../assets/images/test.png")}
                 style={styles.profileImage}
               />
             </View>

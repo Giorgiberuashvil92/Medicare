@@ -52,7 +52,7 @@ const TopDoctors = () => {
           justifyContent: "space-between",
           width: "100%",
         }}
-        onPress={() => router.push("/topdoctors")}
+        onPress={() => router.push("/screens/doctors/topdoctors")}
       >
         <SeeAll title="Top Rated Doctors" />
       </TouchableOpacity>
@@ -71,7 +71,7 @@ const TopDoctors = () => {
             style={styles.doctorCard}
             onPress={() =>
               router.push({
-                pathname: "/doctor/[id]",
+                pathname: "/screens/doctors/doctor/[id]",
                 params: { id: doctor.id.toString() },
               })
             }

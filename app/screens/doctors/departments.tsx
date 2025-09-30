@@ -1,3 +1,5 @@
+import CommonSymptoms from "@/app/components/ui/commonSymptoms";
+import TopDoctors from "@/app/components/ui/topDoctors";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -10,69 +12,67 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CommonSymptoms from "./components/ui/commonSymptoms";
-import TopDoctors from "./components/ui/topDoctors";
 
 const DepartmentsScreen = () => {
   const departments = [
     {
       name: "Neurology",
-      imageUrl: require("../assets/images/icons/brain1.png"),
+      imageUrl: require("../../../assets/images/icons/brain1.png"),
       bgColor: "#E3F2FD",
     },
     {
       name: "Cardiology",
-      imageUrl: require("../assets/images/icons/cardiology.png"),
+      imageUrl: require("../../../assets/images/icons/cardiology.png"),
       bgColor: "#FFEBEE",
     },
     {
       name: "Gynecology",
-      imageUrl: require("../assets/images/icons/pregnant.png"),
+      imageUrl: require("../../../assets/images/icons/pregnant.png"),
       bgColor: "#F3E5F5",
     },
     {
       name: "Pediatrics",
-      imageUrl: require("../assets/images/icons/baby.png"),
+      imageUrl: require("../../../assets/images/icons/baby.png"),
       bgColor: "#E8F5E8",
     },
     {
       name: "Allergy",
-      imageUrl: require("../assets/images/icons/allergy.png"),
+      imageUrl: require("../../../assets/images/icons/allergy.png"),
       bgColor: "#FFF3E0",
     },
     {
       name: "Dentist",
-      imageUrl: require("../assets/images/icons/dendist.png"),
+      imageUrl: require("../../../assets/images/icons/dendist.png"),
       bgColor: "#E0F2F1",
     },
     {
       name: "Urology",
-      imageUrl: require("../assets/images/icons/urology.png"),
+      imageUrl: require("../../../assets/images/icons/urology.png"),
       bgColor: "#E1F5FE",
     },
     {
       name: "Gastrology",
-      imageUrl: require("../assets/images/icons/gastrology.png"),
+      imageUrl: require("../../../assets/images/icons/gastrology.png"),
       bgColor: "#FCE4EC",
     },
     {
       name: "Dermatology",
-      imageUrl: require("../assets/images/icons/cardiology.png"),
+      imageUrl: require("../../../assets/images/icons/cardiology.png"),
       bgColor: "#FFF8E1",
     },
     {
       name: "Orthopedics",
-      imageUrl: require("../assets/images/icons/brain1.png"),
+      imageUrl: require("../../../assets/images/icons/brain1.png"),
       bgColor: "#E8EAF6",
     },
     {
       name: "Ophthalmology",
-      imageUrl: require("../assets/images/icons/allergy.png"),
+      imageUrl: require("../../../assets/images/icons/allergy.png"),
       bgColor: "#F1F8E9",
     },
     {
       name: "Psychology",
-      imageUrl: require("../assets/images/icons/phycatry.png"),
+      imageUrl: require("../../../assets/images/icons/phycatry.png"),
       bgColor: "#FCE4EC",
     },
   ];

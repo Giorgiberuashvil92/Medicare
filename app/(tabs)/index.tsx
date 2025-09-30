@@ -19,8 +19,8 @@ export default function HomeScreen() {
         <Departments />
         <TopDoctors />
         <Banner />
-        <HealthcareProducts />
-        <PopularProducts />
+        <HealthcareProducts name="Healthcare Products" />
+        <PopularProducts name="Popular Products" />
       </SafeAreaView>
     </ScrollView>
   );

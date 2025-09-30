@@ -5,11 +5,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { popularProducts } from "../../../assets/data/popularProducts";
 import SeeAll from "./seeAll";
 
-const PopularProducts = () => {
+const PopularProducts = ({ name }: { name: string }) => {
   return (
     <View style={{ padding: 16 }}>
       <View style={styles.header}>
-        <SeeAll title="Popular Products" />
+        <SeeAll title={name} />
       </View>
       <View style={styles.grid}>
         {popularProducts.map((product) => (

@@ -56,7 +56,7 @@ export default function DoctorsListScreen() {
 
   const handleDoctorPress = (doctorId: string) => {
     router.push({
-      pathname: "/doctor/[id]",
+      pathname: "/screens/doctors/doctor/[id]",
       params: { id: doctorId },
     });
   };

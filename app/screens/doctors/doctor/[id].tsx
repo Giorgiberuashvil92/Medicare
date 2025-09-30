@@ -1,3 +1,4 @@
+import AppointmentScheduler from "@/app/components/ui/appointmentScheduler";
 import { doctors } from "@/assets/data/doctors";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
@@ -11,7 +12,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AppointmentScheduler from "../components/ui/appointmentScheduler";
 
 const DoctorDetail = () => {
   const { id } = useLocalSearchParams();

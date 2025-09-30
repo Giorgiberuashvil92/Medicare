@@ -23,12 +23,12 @@ export default function SplashScreen() {
         if (hasCompletedOnboarding === "true") {
           router.replace("/(tabs)");
         } else {
-          router.replace("/onboarding");
+          router.replace("/screens/auth/onboarding");
         }
       } catch (error) {
         console.error("Error checking onboarding status:", error);
         setIsLoading(false);
-        router.replace("/onboarding");
+        router.replace("/screens/auth/onboarding");
       }
     };
 

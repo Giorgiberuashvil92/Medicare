@@ -15,17 +15,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     // Navigate to main app without validation
     router.replace("/(tabs)");
   };
 
-  const handleSignup = () => {
-    router.push("/register");
+  const handleSignin = () => {
+    router.push("/screens/auth/login");
   };
 
   return (
@@ -37,20 +36,36 @@ export default function LoginScreen() {
           <View style={styles.logoContainer}>
             <View style={styles.logo}>
               <Image
-                source={require("../assets/images/logo/logo.png")}
+                source={require("../../../assets/images/logo/logo.png")}
                 style={styles.logoImage}
               />
             </View>
           </View>
 
           {/* Title */}
-          <Text style={styles.title}>Hello Again!</Text>
-          <Text style={styles.subtitle}>
-            Welcome back you&apos;ve been missed!
-          </Text>
+          <Text style={styles.title}>Welcome to Teledoc</Text>
+          <Text style={styles.subtitle}>Welcome to Teledoc</Text>
 
           {/* Form */}
           <View style={styles.form}>
+            {/* Name Input */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Name</Text>
+              <View style={styles.inputWrapper}>
+                <Ionicons
+                  name="person-outline"
+                  size={20}
+                  color="#9CA3AF"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Mizanur Rahman"
+                  placeholderTextColor="#9CA3AF"
+                />
+              </View>
+            </View>
+
             {/* Email Input */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email</Text>
@@ -98,32 +113,12 @@ export default function LoginScreen() {
               </View>
             </View>
 
-            {/* Remember Me & Forgot Password */}
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity
-                style={styles.checkboxContainer}
-                onPress={() => setRememberMe(!rememberMe)}
-              >
-                <View
-                  style={[
-                    styles.checkbox,
-                    rememberMe && styles.checkboxChecked,
-                  ]}
-                >
-                  {rememberMe && (
-                    <Ionicons name="checkmark" size={16} color="#FFFFFF" />
-                  )}
-                </View>
-                <Text style={styles.checkboxLabel}>Remember me</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.forgotPassword}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Login Button */}
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
+            {/* Signup Button */}
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={handleSignup}
+            >
+              <Text style={styles.signupButtonText}>Sign up</Text>
             </TouchableOpacity>
 
             {/* Divider */}
@@ -153,13 +148,11 @@ export default function LoginScreen() {
               </Text>
             </TouchableOpacity>
 
-            {/* Signup Link */}
-            <View style={styles.signupContainer}>
-              <Text style={styles.signupText}>
-                Don&apos;t have an account?{" "}
-              </Text>
-              <TouchableOpacity onPress={handleSignup}>
-                <Text style={styles.signupLink}>signup</Text>
+            {/* Signin Link */}
+            <View style={styles.signinContainer}>
+              <Text style={styles.signinText}>Have an account? </Text>
+              <TouchableOpacity onPress={handleSignin}>
+                <Text style={styles.signinLink}>sign in</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -199,7 +192,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Bold",
     color: "#1F2937",
     textAlign: "center",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
@@ -212,13 +205,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   label: {
     fontSize: 16,
     fontFamily: "Poppins-Medium",
     color: "#1F2937",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   inputWrapper: {
     flexDirection: "row",
@@ -242,49 +235,15 @@ const styles = StyleSheet.create({
   eyeIcon: {
     padding: 4,
   },
-  optionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 32,
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 2,
-    borderColor: "#D1D5DB",
-    borderRadius: 4,
-    marginRight: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  checkboxChecked: {
-    backgroundColor: "#06B6D4",
-    borderColor: "#06B6D4",
-  },
-  checkboxLabel: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#6B7280",
-  },
-  forgotPassword: {
-    fontSize: 14,
-    fontFamily: "Poppins-Medium",
-    color: "#06B6D4",
-  },
-  loginButton: {
+  signupButton: {
     backgroundColor: "#06B6D4",
     borderRadius: 12,
     height: 56,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 32,
+    marginBottom: 20,
   },
-  loginButtonText: {
+  signupButtonText: {
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
@@ -292,7 +251,7 @@ const styles = StyleSheet.create({
   dividerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 20,
   },
   dividerLine: {
     flex: 1,
@@ -314,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 56,
     paddingHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 15,
   },
   socialIcon: {
     width: 20,
@@ -332,18 +291,18 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
     color: "#1F2937",
   },
-  signupContainer: {
+  signinContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 24,
+    marginTop: 10,
   },
-  signupText: {
+  signinText: {
     fontSize: 16,
     fontFamily: "Poppins-Regular",
     color: "#1F2937",
   },
-  signupLink: {
+  signinLink: {
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#06B6D4",

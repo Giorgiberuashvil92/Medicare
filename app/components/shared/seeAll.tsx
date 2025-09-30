@@ -1,15 +1,25 @@
+import { router } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface SeeAllProps {
   title: string;
+  route?: string;
 }
 
-const SeeAll = ({ title }: SeeAllProps) => {
+const SeeAll = ({ title, route }: SeeAllProps) => {
+  const handleSeeAll = () => {
+    if (route) {
+      router.push(route as any);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.seeAll}>See All</Text>
+      <TouchableOpacity onPress={handleSeeAll}>
+        <Text style={styles.seeAll}>See All</Text>
+      </TouchableOpacity>
     </View>
   );
 };

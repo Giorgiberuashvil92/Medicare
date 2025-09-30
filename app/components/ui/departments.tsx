@@ -59,7 +59,7 @@ const Departments = () => {
             justifyContent: "space-between",
             width: "100%",
           }}
-          onPress={() => router.push("/departments")}
+          onPress={() => router.push("/screens/doctors/departments")}
         >
           <SeeAll title="Departments" />
         </TouchableOpacity>

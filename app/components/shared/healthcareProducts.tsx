@@ -3,11 +3,11 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import SeeAll from "./seeAll";
 
-const HealthcareProducts = () => {
+const HealthcareProducts = ({ name }: { name: string }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <SeeAll title="Healthcare Products" />
+        <SeeAll title={name} route="/screens/medicine/categories" />
       </View>
       <ScrollView
         horizontal

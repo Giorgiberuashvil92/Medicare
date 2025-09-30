@@ -1,3 +1,4 @@
+import DoctorFilters from "@/app/components/shared/doctorFilters";
 import { doctors } from "@/assets/data/doctors";
 import { Ionicons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -11,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import DoctorFilters from "./components/shared/doctorFilters";
 
 const TopDoctors = () => {
   const [selectedFilter, setSelectedFilter] = useState(1);
@@ -62,7 +62,7 @@ const TopDoctors = () => {
       style={styles.doctorCard}
       onPress={() =>
         router.push({
-          pathname: "/doctor/[id]",
+          pathname: "/screens/doctors/doctor/[id]",
           params: { id: doctor.id.toString() },
         })
       }
@@ -126,7 +126,7 @@ const TopDoctors = () => {
               <TouchableOpacity
                 onPress={() =>
                   router.push({
-                    pathname: "/doctors-list",
+                    pathname: "/screens/doctors/doctors-list",
                     params: { specialty: specialization },
                   })
                 }

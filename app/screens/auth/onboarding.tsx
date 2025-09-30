@@ -83,7 +83,7 @@ export default function OnboardingScreen() {
   const handleGetStarted = async () => {
     // Simple transition to login screen
     await AsyncStorage.setItem("hasCompletedOnboarding", "true");
-    router.replace("/login");
+    router.replace("/screens/auth/login");
   };
 
   const currentData = onboardingData[currentIndex];
@@ -99,7 +99,7 @@ export default function OnboardingScreen() {
 
       {/* Background Image */}
       <Image
-        source={require("../assets/images/backgrounds/onboarding.png")}
+        source={require("../../../assets/images/backgrounds/onboarding.png")}
         style={styles.backgroundImage}
         contentFit="cover"
       />
@@ -117,7 +117,7 @@ export default function OnboardingScreen() {
           >
             {/* Vector Background Image */}
             <Image
-              source={require("../assets/images/icons/Vector.png")}
+              source={require("../../../assets/images/icons/Vector.png")}
               style={styles.vectorBackground}
               contentFit="contain"
             />
