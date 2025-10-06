@@ -1,6 +1,6 @@
 import AppointmentScheduler from "@/app/components/ui/appointmentScheduler";
 import { doctors } from "@/assets/data/doctors";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -110,6 +110,7 @@ const DoctorDetail = () => {
               availability={doctor.availability || []}
               totalReviews={doctor.totalReviews || 0}
               reviews={Array.isArray(doctor.reviews) ? doctor.reviews : []}
+              doctorId={doctor.id}
             />
           </View>
         )}

@@ -1,7 +1,7 @@
 import DoctorFilters from "@/app/components/shared/doctorFilters";
 import { doctors } from "@/assets/data/doctors";
-import { Ionicons } from "@expo/vector-icons";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import React, { useMemo, useState } from "react";

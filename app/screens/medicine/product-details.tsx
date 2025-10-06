@@ -1,9 +1,10 @@
 import { healthcareProducts } from "@/assets/data/healthcareProducts";
-import { Ionicons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -12,10 +13,12 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useCart } from "../../contexts/CartContext";
 
 const ProductDetails = () => {
   const { productId } = useLocalSearchParams();
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   // Find the product
   const product = healthcareProducts
@@ -40,8 +43,32 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = () => {
-    console.log("Added to cart:", product.name, "Quantity:", quantity);
-    // აქ შეგიძლია დაამატო cart functionality
+    // Add product to cart with selected quantity
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: parseFloat(product.price.replace("$", "")),
+        weight: product.tabletAmount || "250g",
+        image: product.image,
+      },
+      quantity
+    );
+
+    Alert.alert(
+      "Added to Cart",
+      `${quantity} ${product.name} has been added to your cart`,
+      [
+        {
+          text: "Continue Shopping",
+          style: "cancel",
+        },
+        {
+          text: "View Cart",
+          onPress: () => router.push("/screens/medicine/cart"),
+        },
+      ]
+    );
   };
 
   return (
@@ -53,9 +80,12 @@ const ProductDetails = () => {
         >
           <Feather name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Product Details</Text>
-        <TouchableOpacity style={styles.likeButton}>
-          <Feather name="heart" size={24} color="#666666" />
+        <Text style={styles.headerTitle}>Product Description</Text>
+        <TouchableOpacity
+          style={styles.likeButton}
+          onPress={() => router.push("/screens/medicine/cart")}
+        >
+          <Feather name="shopping-cart" size={24} color="#666666" />
         </TouchableOpacity>
       </View>
 
@@ -72,11 +102,11 @@ const ProductDetails = () => {
           </View>
 
           {/* Image Slider Dots */}
-          <View style={styles.sliderDots}>
+          {/* <View style={styles.sliderDots}>
             <View style={[styles.dot, styles.activeDot]} />
             <View style={styles.dot} />
             <View style={styles.dot} />
-          </View>
+          </View> */}
         </View>
 
         {/* Product Info */}
@@ -152,7 +182,7 @@ const ProductDetails = () => {
             style={styles.quantityButton}
             onPress={() => setQuantity(quantity + 1)}
           >
-            <Ionicons name="add" size={20} color="white" />
+            <Ionicons name="add" size={20} color="666666" />
           </TouchableOpacity>
         </View>
 

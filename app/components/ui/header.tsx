@@ -3,10 +3,17 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useCart } from "../../contexts/CartContext";
 
 const Header = () => {
+  const { getTotalItems } = useCart();
+
   const handleProfilePress = () => {
     router.push("/screens/profile/profile");
+  };
+
+  const handleCartPress = () => {
+    router.push("/screens/medicine/cart");
   };
 
   return (
@@ -25,7 +32,17 @@ const Header = () => {
           </Text>
         </View>
       </TouchableOpacity>
-      <Ionicons name="notifications-outline" size={24} color="black" />
+      <View style={styles.rightIcons}>
+        <TouchableOpacity onPress={handleCartPress} style={styles.cartIcon}>
+          <Ionicons name="cart-outline" size={24} color="black" />
+          {getTotalItems() > 0 && (
+            <View style={styles.cartBadge}>
+              <Text style={styles.cartBadgeText}>{getTotalItems()}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+        <Ionicons name="notifications-outline" size={24} color="black" />
+      </View>
     </View>
   );
 };
@@ -43,5 +60,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+  rightIcons: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  cartIcon: {
+    position: "relative",
+  },
+  cartBadge: {
+    position: "absolute",
+    top: -8,
+    right: -8,
+    backgroundColor: "#FF4444",
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cartBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontFamily: "Poppins-Bold",
   },
 });

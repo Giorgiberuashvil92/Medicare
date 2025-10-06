@@ -1,4 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   ScrollView,
@@ -28,6 +29,7 @@ interface AppointmentSchedulerProps {
   availability: DayAvailability[];
   totalReviews: number;
   reviews: Review[];
+  doctorId?: number;
 }
 
 const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
@@ -35,6 +37,7 @@ const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
   availability,
   totalReviews,
   reviews,
+  doctorId,
 }) => {
   const [selectedDate, setSelectedDate] = useState<string>(
     availability[0]?.date || ""
@@ -166,6 +169,18 @@ const AppointmentScheduler: React.FC<AppointmentSchedulerProps> = ({
           (!selectedDate || !selectedTime) && styles.disabledButton,
         ]}
         disabled={!selectedDate || !selectedTime}
+        onPress={() => {
+          if (selectedDate && selectedTime && doctorId) {
+            router.push({
+              pathname: "/screens/appointment/make-appointment",
+              params: {
+                doctorId: doctorId.toString(),
+                selectedDate: selectedDate,
+                selectedTime: selectedTime,
+              },
+            });
+          }
+        }}
       >
         <Text style={styles.bookButtonText}>Book Appointment</Text>
       </TouchableOpacity>

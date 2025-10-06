@@ -1,6 +1,6 @@
 import CommonSymptoms from "@/app/components/ui/commonSymptoms";
 import TopDoctors from "@/app/components/ui/topDoctors";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import React from "react";
