@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { CartProvider } from "./contexts/CartContext";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,16 +31,18 @@ export default function RootLayout() {
   }
 
   return (
-    <CartProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="screens" />
-      </Stack>
-    </CartProvider>
+    <FavoritesProvider>
+      <CartProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="screens" />
+        </Stack>
+      </CartProvider>
+    </FavoritesProvider>
   );
 }

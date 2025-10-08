@@ -62,7 +62,10 @@ export default function ProfileScreen() {
 
         {/* Menu Options */}
         <View style={styles.menuSection}>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/screens/profile/favourites")}
+          >
             <View style={styles.menuIconContainer}>
               <Ionicons name="heart" size={20} color="#06B6D4" />
             </View>

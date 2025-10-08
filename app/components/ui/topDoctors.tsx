@@ -1,3 +1,4 @@
+import { useFavorites } from "@/app/contexts/FavoritesContext";
 import { doctors } from "@/assets/data/doctors";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,6 +17,7 @@ import SeeAll from "../shared/seeAll";
 
 const TopDoctors = () => {
   const [selectedFilter, setSelectedFilter] = useState(1);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const filteredDoctors = useMemo(() => {
     if (selectedFilter === 1) {
@@ -97,8 +99,18 @@ const TopDoctors = () => {
                     ({doctor.reviewCount})
                   </Text>
                 </View>
-                <TouchableOpacity style={styles.favoriteButton}>
-                  <Ionicons name="heart-outline" size={20} color="#D4D4D4" />
+                <TouchableOpacity
+                  style={styles.favoriteButton}
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(doctor);
+                  }}
+                >
+                  <Ionicons
+                    name={isFavorite(doctor.id) ? "heart" : "heart-outline"}
+                    size={20}
+                    color={isFavorite(doctor.id) ? "#EF4444" : "#D4D4D4"}
+                  />
                 </TouchableOpacity>
               </View>
             </View>

@@ -1,4 +1,5 @@
 import AppointmentScheduler from "@/app/components/ui/appointmentScheduler";
+import { useFavorites } from "@/app/contexts/FavoritesContext";
 import { doctors } from "@/assets/data/doctors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
@@ -18,6 +19,7 @@ const DoctorDetail = () => {
   const doctor = doctors.find((d) => d.id === parseInt(id as string));
   const [showAppointmentScheduler, setShowAppointmentScheduler] =
     useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!doctor) {
     return (
@@ -36,6 +38,16 @@ const DoctorDetail = () => {
           onPress={() => router.back()}
         >
           <Ionicons name="arrow-back" size={24} color="#64748B" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.favoriteButton}
+          onPress={() => toggleFavorite(doctor)}
+        >
+          <Ionicons
+            name={isFavorite(doctor.id) ? "heart" : "heart-outline"}
+            size={24}
+            color={isFavorite(doctor.id) ? "#EF4444" : "#64748B"}
+          />
         </TouchableOpacity>
         <View style={styles.profileImageContainer}>
           <Image source={doctor.image} style={styles.profileImage} />
@@ -147,6 +159,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     left: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  favoriteButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
     width: 40,
     height: 40,
     borderRadius: 20,

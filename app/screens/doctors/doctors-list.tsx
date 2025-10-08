@@ -1,3 +1,4 @@
+import { useFavorites } from "@/app/contexts/FavoritesContext";
 import { doctors } from "@/assets/data/doctors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
@@ -17,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function DoctorsListScreen() {
   const { specialty } = useLocalSearchParams<{ specialty: string }>();
   const [searchQuery, setSearchQuery] = useState("");
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   // Filter doctors by specialty and search query
   const filteredDoctors = useMemo(() => {
@@ -44,14 +45,8 @@ export default function DoctorsListScreen() {
     router.back();
   };
 
-  const handleToggleFavorite = (doctorId: string) => {
-    const newFavorites = new Set(favorites);
-    if (newFavorites.has(doctorId)) {
-      newFavorites.delete(doctorId);
-    } else {
-      newFavorites.add(doctorId);
-    }
-    setFavorites(newFavorites);
+  const handleToggleFavorite = (doctor: (typeof doctors)[0]) => {
+    toggleFavorite(doctor);
   };
 
   const handleDoctorPress = (doctorId: string) => {
@@ -86,14 +81,12 @@ export default function DoctorsListScreen() {
       <View style={styles.doctorActions}>
         <TouchableOpacity
           style={styles.favoriteButton}
-          onPress={() => handleToggleFavorite(doctor.id.toString())}
+          onPress={() => handleToggleFavorite(doctor)}
         >
           <Ionicons
-            name={
-              favorites.has(doctor.id.toString()) ? "heart" : "heart-outline"
-            }
+            name={isFavorite(doctor.id) ? "heart" : "heart-outline"}
             size={24}
-            color={favorites.has(doctor.id.toString()) ? "#EF4444" : "#9CA3AF"}
+            color={isFavorite(doctor.id) ? "#EF4444" : "#9CA3AF"}
           />
         </TouchableOpacity>
 
