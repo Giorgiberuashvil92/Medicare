@@ -264,7 +264,7 @@ const PatientDetails = () => {
         <DateTimePicker
           value={selectedDate}
           mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          display={Platform.OS === "ios" ? "spinner" : "spinner"}
           onChange={onDateChange}
           maximumDate={new Date()}
           minimumDate={new Date(1900, 0, 1)}
