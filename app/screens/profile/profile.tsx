@@ -81,7 +81,10 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            onPress={() => router.push("/screens/profile/payment")}
+            style={styles.menuItem}
+          >
             <View style={styles.menuIconContainer}>
               <Ionicons name="wallet" size={20} color="#06B6D4" />
             </View>
@@ -105,7 +108,10 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/screens/profile/language")}
+          >
             <View style={styles.menuIconContainer}>
               <Ionicons name="language" size={20} color="#06B6D4" />
             </View>
@@ -113,7 +119,10 @@ export default function ProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push("/screens/profile/helpCenter")}
+          >
             <View style={styles.menuIconContainer}>
               <Ionicons name="help-circle" size={20} color="#06B6D4" />
             </View>

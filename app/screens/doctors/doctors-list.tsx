@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
   FlatList,
+  Modal,
   StatusBar,
   StyleSheet,
   Text,
@@ -19,6 +20,8 @@ export default function DoctorsListScreen() {
   const { specialty } = useLocalSearchParams<{ specialty: string }>();
   const [searchQuery, setSearchQuery] = useState("");
   const { isFavorite, toggleFavorite } = useFavorites();
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
 
   // Filter doctors by specialty and search query
   const filteredDoctors = useMemo(() => {
@@ -46,7 +49,27 @@ export default function DoctorsListScreen() {
   };
 
   const handleToggleFavorite = (doctor: (typeof doctors)[0]) => {
-    toggleFavorite(doctor);
+    if (isFavorite(doctor.id)) {
+      // Show confirmation modal for removal
+      setSelectedDoctor(doctor as any);
+      setShowRemoveModal(true);
+    } else {
+      // Add to favorites directly
+      toggleFavorite(doctor as any);
+    }
+  };
+
+  const confirmRemoveFavorite = async () => {
+    if (selectedDoctor) {
+      await toggleFavorite(selectedDoctor as any);
+      setShowRemoveModal(false);
+      setSelectedDoctor(null);
+    }
+  };
+
+  const cancelRemoveFavorite = () => {
+    setShowRemoveModal(false);
+    setSelectedDoctor(null);
   };
 
   const handleDoctorPress = (doctorId: string) => {
@@ -144,6 +167,82 @@ export default function DoctorsListScreen() {
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
         />
+
+        {/* Remove Confirmation Modal */}
+        <Modal
+          visible={showRemoveModal}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={cancelRemoveFavorite}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalHandle} />
+
+              <Text style={styles.modalTitle}>Remove from Favourites?</Text>
+
+              {selectedDoctor && (
+                <View style={styles.doctorCardModal}>
+                  <View style={styles.doctorImageContainerModal}>
+                    <Image
+                      source={selectedDoctor.image}
+                      style={styles.doctorImageModal}
+                    />
+                  </View>
+
+                  <View style={styles.doctorInfoModal}>
+                    <Text style={styles.doctorNameModal}>
+                      {selectedDoctor.name}
+                    </Text>
+                    <Text style={styles.doctorSpecialtyModal}>
+                      {selectedDoctor.specialization}
+                    </Text>
+                    <Text style={styles.doctorQualificationModal}>
+                      {selectedDoctor.degrees || "MBBS, FCPS"}
+                    </Text>
+                    <View style={styles.doctorDetailsModal}>
+                      <View style={styles.consultationFeeModal}>
+                        <Text style={styles.consultationFeeTextModal}>
+                          {selectedDoctor.consultationFee || "$100"}
+                        </Text>
+                      </View>
+                      <View style={styles.ratingContainerModal}>
+                        <Ionicons name="star" size={16} color="#F59E0B" />
+                        <Text style={styles.ratingTextModal}>
+                          {selectedDoctor.rating} (
+                          {selectedDoctor.reviewCount ||
+                            selectedDoctor.reviews ||
+                            0}
+                          )
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  <View style={styles.favoriteIconModal}>
+                    <Ionicons name="heart" size={20} color="#EF4444" />
+                  </View>
+                </View>
+              )}
+
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={styles.cancelButton}
+                  onPress={cancelRemoveFavorite}
+                >
+                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.removeButton}
+                  onPress={confirmRemoveFavorite}
+                >
+                  <Text style={styles.removeButtonText}>Yes, remove</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </View>
   );
@@ -299,5 +398,137 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Poppins-Medium",
     color: "#6B7280",
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 20,
+    minHeight: 300,
+  },
+  modalHandle: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#E5E7EB",
+    borderRadius: 2,
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontFamily: "Poppins-Bold",
+    color: "#1F2937",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  doctorCardModal: {
+    flexDirection: "row",
+    backgroundColor: "#F9FAFB",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 30,
+    alignItems: "center",
+  },
+  doctorImageContainerModal: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    backgroundColor: "#E5E7EB",
+    marginRight: 16,
+    overflow: "hidden",
+  },
+  doctorImageModal: {
+    width: "100%",
+    height: "100%",
+  },
+  doctorInfoModal: {
+    flex: 1,
+  },
+  doctorNameModal: {
+    fontSize: 16,
+    fontFamily: "Poppins-Bold",
+    color: "#1F2937",
+    marginBottom: 4,
+  },
+  doctorSpecialtyModal: {
+    fontSize: 14,
+    fontFamily: "Poppins-Medium",
+    color: "#6B7280",
+    marginBottom: 2,
+  },
+  doctorQualificationModal: {
+    fontSize: 12,
+    fontFamily: "Poppins-Regular",
+    color: "#9CA3AF",
+    marginBottom: 8,
+  },
+  doctorDetailsModal: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  consultationFeeModal: {
+    backgroundColor: "#E5E7EB",
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  consultationFeeTextModal: {
+    fontSize: 12,
+    fontFamily: "Poppins-SemiBold",
+    color: "#1F2937",
+  },
+  ratingContainerModal: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  ratingTextModal: {
+    fontSize: 12,
+    fontFamily: "Poppins-Medium",
+    color: "#6B7280",
+  },
+  favoriteIconModal: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#20BEB8",
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    color: "#20BEB8",
+  },
+  removeButton: {
+    flex: 1,
+    backgroundColor: "#20BEB8",
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: "center",
+  },
+  removeButtonText: {
+    fontSize: 16,
+    fontFamily: "Poppins-SemiBold",
+    color: "#FFFFFF",
   },
 });

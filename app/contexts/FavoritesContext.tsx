@@ -15,7 +15,7 @@ export interface Doctor {
   specialization: string;
   rating: number;
   reviewCount?: number;
-  reviews?: number;
+  reviews?: number | any[];
   image: any;
   degrees?: string;
   location?: string;
@@ -25,6 +25,9 @@ export interface Doctor {
   followUpFee?: string;
   about?: string;
   isActive?: boolean;
+  workingHours?: string;
+  availability?: any[];
+  totalReviews?: number;
 }
 
 interface FavoritesContextType {

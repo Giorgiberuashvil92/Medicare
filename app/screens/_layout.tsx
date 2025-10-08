@@ -26,6 +26,10 @@ export default function ScreensLayout() {
       {/* Profile Routes */}
       <Stack.Screen name="profile/profile" />
       <Stack.Screen name="profile/favourites" />
+      <Stack.Screen name="profile/payment" />
+      <Stack.Screen name="profile/newPayment" />
+      <Stack.Screen name="profile/language" />
+      <Stack.Screen name="profile/helpCenter" />
     </Stack>
   );
 }
