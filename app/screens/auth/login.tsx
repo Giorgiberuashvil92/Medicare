@@ -36,6 +36,7 @@ export default function LoginScreen() {
               <Image
                 source={require("../../../assets/images/logo/logo.png")}
                 style={styles.logoImage}
+                contentFit="contain"
               />
             </View>
           </View>
@@ -348,6 +349,5 @@ const styles = StyleSheet.create({
   logoImage: {
     width: 50,
     height: 50,
-    resizeMode: "contain",
   },
 });

@@ -81,9 +81,8 @@ export default function OnboardingScreen() {
   };
 
   const handleGetStarted = async () => {
-    // Simple transition to login screen
     await AsyncStorage.setItem("hasCompletedOnboarding", "true");
-    router.replace("/screens/auth/login");
+    router.replace("/screens/auth/roleSelection");
   };
 
   const currentData = onboardingData[currentIndex];

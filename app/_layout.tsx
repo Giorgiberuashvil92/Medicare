@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 
@@ -31,18 +32,21 @@ export default function RootLayout() {
   }
 
   return (
-    <FavoritesProvider>
-      <CartProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="screens" />
-        </Stack>
-      </CartProvider>
-    </FavoritesProvider>
+    <AuthProvider>
+      <FavoritesProvider>
+        <CartProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(doctor-tabs)" />
+            <Stack.Screen name="screens" />
+          </Stack>
+        </CartProvider>
+      </FavoritesProvider>
+    </AuthProvider>
   );
 }

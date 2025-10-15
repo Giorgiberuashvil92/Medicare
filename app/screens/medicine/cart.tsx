@@ -64,6 +64,7 @@ const Cart = () => {
                     <Image
                       source={item.image as any}
                       style={styles.productImageSource}
+                      contentFit="cover"
                     />
                   ) : (
                     <Text style={styles.productInitials}>
@@ -252,7 +253,6 @@ const styles = StyleSheet.create({
   productImageSource: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
   },
   productInitials: {
     fontSize: 16,

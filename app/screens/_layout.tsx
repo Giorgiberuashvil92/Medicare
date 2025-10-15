@@ -20,6 +20,7 @@ export default function ScreensLayout() {
 
       {/* Auth Routes */}
       <Stack.Screen name="auth/onboarding" />
+      <Stack.Screen name="auth/roleSelection" />
       <Stack.Screen name="auth/login" />
       <Stack.Screen name="auth/register" />
 

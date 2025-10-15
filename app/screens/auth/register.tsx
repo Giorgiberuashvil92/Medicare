@@ -1,8 +1,10 @@
+import { useAuth } from "@/app/contexts/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -13,147 +15,210 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterScreen() {
+  const { userRole } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
+  // Common fields
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Doctor specific fields
+  const [specialization, setSpecialization] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+
   const handleSignup = () => {
-    // Navigate to main app without validation
-    router.replace("/(tabs)");
+    // Basic validation
+    if (!name || !email || !password) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    if (userRole === "doctor" && (!specialization || !licenseNumber)) {
+      alert("Please complete all doctor fields");
+      return;
+    }
+
+    // Navigate based on role
+    if (userRole === "doctor") {
+      router.replace("/(doctor-tabs)");
+    } else {
+      router.replace("/(tabs)");
+    }
   };
 
   const handleSignin = () => {
     router.push("/screens/auth/login");
   };
 
+  const isDoctor = userRole === "doctor";
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.content}>
-          {/* Logo */}
-          <View style={styles.logoContainer}>
-            <View style={styles.logo}>
-              <Image
-                source={require("../../../assets/images/logo/logo.png")}
-                style={styles.logoImage}
-              />
-            </View>
-          </View>
-
-          {/* Title */}
-          <Text style={styles.title}>Welcome to Teledoc</Text>
-          <Text style={styles.subtitle}>Welcome to Teledoc</Text>
-
-          {/* Form */}
-          <View style={styles.form}>
-            {/* Name Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Name</Text>
-              <View style={styles.inputWrapper}>
-                <Ionicons
-                  name="person-outline"
-                  size={20}
-                  color="#9CA3AF"
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Mizanur Rahman"
-                  placeholderTextColor="#9CA3AF"
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.content}>
+            {/* Logo */}
+            <View style={styles.logoContainer}>
+              <View style={styles.logo}>
+                <Image
+                  source={require("../../../assets/images/logo/logo.png")}
+                  style={styles.logoImage}
+                  contentFit="contain"
                 />
               </View>
             </View>
 
-            {/* Email Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
-              <View style={styles.inputWrapper}>
-                <Ionicons
-                  name="mail-outline"
-                  size={20}
-                  color="#9CA3AF"
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="mizanurrahman@gmail.com"
-                  placeholderTextColor="#9CA3AF"
-                />
-              </View>
-            </View>
+            {/* Title */}
+            <Text style={styles.title}>
+              {isDoctor ? "Register as Doctor" : "Create Account"}
+            </Text>
+            <Text style={styles.subtitle}>
+              {isDoctor
+                ? "Join as healthcare provider"
+                : "Sign up to get started"}
+            </Text>
 
-            {/* Password Input */}
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.inputWrapper}>
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={20}
-                  color="#9CA3AF"
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={styles.input}
-                  secureTextEntry={!showPassword}
-                  placeholder="••••••••••"
-                  placeholderTextColor="#9CA3AF"
-                />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.eyeIcon}
-                >
+            {/* Form */}
+            <View style={styles.form}>
+              {/* Name Input */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Full Name *</Text>
+                <View style={styles.inputWrapper}>
                   <Ionicons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    name="person-outline"
                     size={20}
                     color="#9CA3AF"
+                    style={styles.inputIcon}
                   />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter your full name"
+                    placeholderTextColor="#9CA3AF"
+                    value={name}
+                    onChangeText={setName}
+                  />
+                </View>
+              </View>
+
+              {/* Email Input */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Email *</Text>
+                <View style={styles.inputWrapper}>
+                  <Ionicons
+                    name="mail-outline"
+                    size={20}
+                    color="#9CA3AF"
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="your.email@example.com"
+                    placeholderTextColor="#9CA3AF"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                </View>
+              </View>
+
+              {/* Doctor specific fields */}
+              {isDoctor && (
+                <>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Specialization *</Text>
+                    <View style={styles.inputWrapper}>
+                      <Ionicons
+                        name="medical-outline"
+                        size={20}
+                        color="#9CA3AF"
+                        style={styles.inputIcon}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="e.g., Cardiology, Pediatrics"
+                        placeholderTextColor="#9CA3AF"
+                        value={specialization}
+                        onChangeText={setSpecialization}
+                      />
+                    </View>
+                  </View>
+
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.label}>License Number *</Text>
+                    <View style={styles.inputWrapper}>
+                      <Ionicons
+                        name="document-text-outline"
+                        size={20}
+                        color="#9CA3AF"
+                        style={styles.inputIcon}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        placeholder="Enter your medical license number"
+                        placeholderTextColor="#9CA3AF"
+                        value={licenseNumber}
+                        onChangeText={setLicenseNumber}
+                      />
+                    </View>
+                  </View>
+                </>
+              )}
+
+              {/* Password Input */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Password *</Text>
+                <View style={styles.inputWrapper}>
+                  <Ionicons
+                    name="lock-closed-outline"
+                    size={20}
+                    color="#9CA3AF"
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    secureTextEntry={!showPassword}
+                    placeholder="••••••••••"
+                    placeholderTextColor="#9CA3AF"
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.eyeIcon}
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye-off-outline" : "eye-outline"}
+                      size={20}
+                      color="#9CA3AF"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Signup Button */}
+              <TouchableOpacity
+                style={styles.signupButton}
+                onPress={handleSignup}
+              >
+                <Text style={styles.signupButtonText}>Sign up</Text>
+              </TouchableOpacity>
+
+              {/* Signin Link */}
+              <View style={styles.signinContainer}>
+                <Text style={styles.signinText}>Have an account? </Text>
+                <TouchableOpacity onPress={handleSignin}>
+                  <Text style={styles.signinLink}>sign in</Text>
                 </TouchableOpacity>
               </View>
             </View>
-
-            {/* Signup Button */}
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={handleSignup}
-            >
-              <Text style={styles.signupButtonText}>Sign up</Text>
-            </TouchableOpacity>
-
-            {/* Divider */}
-            <View style={styles.dividerContainer}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or Login with</Text>
-              <View style={styles.dividerLine} />
-            </View>
-
-            {/* Social Login Buttons */}
-            <TouchableOpacity style={styles.socialButton}>
-              <Image
-                source={{
-                  uri: "https://developers.google.com/identity/images/g-logo.png",
-                }}
-                style={styles.socialIcon}
-              />
-              <Text style={styles.socialButtonText}>Continue with google</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.socialButton}>
-              <View style={[styles.socialIcon, styles.facebookIcon]}>
-                <Ionicons name="logo-facebook" size={20} color="#FFFFFF" />
-              </View>
-              <Text style={styles.socialButtonText}>
-                Continue with Facebook
-              </Text>
-            </TouchableOpacity>
-
-            {/* Signin Link */}
-            <View style={styles.signinContainer}>
-              <Text style={styles.signinText}>Have an account? </Text>
-              <TouchableOpacity onPress={handleSignin}>
-                <Text style={styles.signinLink}>sign in</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -167,10 +232,13 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  content: {
+  scrollView: {
     flex: 1,
+  },
+  content: {
     paddingHorizontal: 24,
     paddingTop: 30,
+    paddingBottom: 40,
   },
   logoContainer: {
     alignItems: "center",
@@ -307,6 +375,5 @@ const styles = StyleSheet.create({
   logoImage: {
     width: 50,
     height: 50,
-    resizeMode: "contain",
   },
 });

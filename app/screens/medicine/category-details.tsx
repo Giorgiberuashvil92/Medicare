@@ -84,7 +84,11 @@ const CategoryDetails = () => {
       }}
     >
       <View style={styles.productImageContainer}>
-        <Image source={item.image} style={styles.productImage} />
+        <Image
+          source={item.image}
+          style={styles.productImage}
+          contentFit="contain"
+        />
         {item.discount && (
           <View style={styles.discountBadge}>
             <Text style={styles.discountText}>{item.discount}</Text>
@@ -204,7 +208,6 @@ const styles = StyleSheet.create({
   productImage: {
     width: 80,
     height: 80,
-    resizeMode: "contain",
   },
   discountBadge: {
     position: "absolute",

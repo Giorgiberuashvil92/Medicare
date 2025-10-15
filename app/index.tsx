@@ -7,33 +7,45 @@ export default function SplashScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkOnboardingStatus = async () => {
-      try {
-        // Check if user has completed onboarding
-        const hasCompletedOnboarding = await AsyncStorage.getItem(
-          "hasCompletedOnboarding"
-        );
-
-        // Simulate loading time
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        setIsLoading(false);
-
-        // Navigate based on onboarding status
-        if (hasCompletedOnboarding === "true") {
-          router.replace("/(tabs)");
-        } else {
-          router.replace("/screens/auth/onboarding");
-        }
-      } catch (error) {
-        console.error("Error checking onboarding status:", error);
-        setIsLoading(false);
-        router.replace("/screens/auth/onboarding");
-      }
-    };
-
-    checkOnboardingStatus();
+    checkInitialRoute();
   }, []);
+
+  const checkInitialRoute = async () => {
+    try {
+      // Simulate loading time
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Check onboarding
+      const hasCompletedOnboarding = await AsyncStorage.getItem(
+        "hasCompletedOnboarding"
+      );
+
+      if (hasCompletedOnboarding !== "true") {
+        router.replace("/screens/auth/onboarding");
+        return;
+      }
+
+      // Check role
+      const userRole = await AsyncStorage.getItem("@medicare_user_role");
+
+      if (!userRole) {
+        router.replace("/screens/auth/roleSelection");
+        return;
+      }
+
+      // Navigate based on role
+      if (userRole === "doctor") {
+        router.replace("/(doctor-tabs)");
+      } else {
+        router.replace("/(tabs)");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      router.replace("/screens/auth/onboarding");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -41,7 +53,7 @@ export default function SplashScreen() {
         <Image
           source={require("../assets/images/splash-icon.png")}
           style={styles.logo}
-          resizeMode="contain"
+          contentFit="contain"
         />
         <Text style={styles.appName}>Medicare</Text>
         <ActivityIndicator size="large" color="#007AFF" style={styles.loader} />
