@@ -11,14 +11,55 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../contexts/AuthContext";
+import { showToast } from "../../utils/toast";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Navigate to main app without validation
-    router.replace("/(tabs)");
+  const { login, userRole, user } = useAuth();
+
+  const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      showToast.error("გთხოვთ შეავსოთ ყველა ველი", "შეცდომა");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await login({ email: email.trim(), password });
+      
+      // Show success toast
+      showToast.auth.loginSuccess(user?.name || "მომხმარებელო");
+      
+      if (userRole === "doctor") {
+        router.replace("/(doctor-tabs)");
+      } else {
+        router.replace("/(tabs)");
+      }
+    } catch (error) {
+      let errorMessage = "შეცდომა შესვლისას";
+      
+      if (error instanceof Error) {
+        if (error.message.includes("Invalid credentials")) {
+          errorMessage = "არასწორი ელ-ფოსტა ან პაროლი";
+        } else if (error.message.includes("User not found")) {
+          errorMessage = "მომხმარებელი არ მოიძებნა";
+        } else if (error.message.includes("Invalid email")) {
+          errorMessage = "არასწორი ელ-ფოსტის ფორმატი";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      showToast.auth.loginError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSignup = () => {
@@ -30,7 +71,6 @@ export default function LoginScreen() {
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
-          {/* Logo */}
           <View style={styles.logoContainer}>
             <View style={styles.logo}>
               <Image
@@ -63,6 +103,11 @@ export default function LoginScreen() {
                   style={styles.input}
                   placeholder="mizanurrahman@gmail.com"
                   placeholderTextColor="#9CA3AF"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
                 />
               </View>
             </View>
@@ -82,6 +127,10 @@ export default function LoginScreen() {
                   secureTextEntry={!showPassword}
                   placeholder="••••••••••"
                   placeholderTextColor="#9CA3AF"
+                  value={password}
+                  onChangeText={setPassword}
+                  autoCapitalize="none"
+                  autoCorrect={false}
                 />
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
@@ -120,8 +169,14 @@ export default function LoginScreen() {
             </View>
 
             {/* Login Button */}
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
+            <TouchableOpacity 
+              style={[styles.loginButton, isLoading && styles.loginButtonDisabled]} 
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {isLoading ? "შესვლა..." : "შესვლა"}
+              </Text>
             </TouchableOpacity>
 
             {/* Divider */}
@@ -286,6 +341,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
+  },
+  loginButtonDisabled: {
+    backgroundColor: "#9CA3AF",
+    opacity: 0.7,
   },
   dividerContainer: {
     flexDirection: "row",

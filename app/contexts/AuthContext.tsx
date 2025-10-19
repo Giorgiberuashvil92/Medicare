@@ -6,15 +6,20 @@ import React, {
   useEffect,
   useState,
 } from "react";
-
+import { apiService, LoginRequest, RegisterRequest, User } from "../services/api";
 const ROLE_STORAGE_KEY = "@medicare_user_role";
 
 export type UserRole = "doctor" | "patient" | null;
 
 interface AuthContextType {
+  user: User | null;
   userRole: UserRole;
-  setUserRole: (role: UserRole) => Promise<void>;
+  isAuthenticated: boolean;
   isLoading: boolean;
+  login: (credentials: LoginRequest) => Promise<void>;
+  register: (userData: RegisterRequest) => Promise<void>;
+  logout: () => Promise<void>;
+  setUserRole: (role: UserRole) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,19 +37,79 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [userRole, setUserRoleState] = useState<UserRole>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadUserRole();
+    loadUserData();
   }, []);
 
-  const loadUserRole = async () => {
+  const loadUserData = async () => {
     try {
-      const storedRole = await AsyncStorage.getItem(ROLE_STORAGE_KEY);
-      setUserRoleState(storedRole as UserRole);
+      const [currentUser, isAuth] = await Promise.all([
+        apiService.getCurrentUser(),
+        apiService.isAuthenticated(),
+      ]);
+
+      if (currentUser && isAuth) {
+        setUser(currentUser);
+        setUserRoleState(currentUser.role);
+      } else {
+        // Clear any invalid data
+        await apiService.logout();
+        setUser(null);
+        setUserRoleState(null);
+      }
     } catch (error) {
-      console.error("Error loading user role:", error);
+      console.error("Error loading user data:", error);
+      await apiService.logout();
+      setUser(null);
+      setUserRoleState(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const login = async (credentials: LoginRequest) => {
+    try {
+      setIsLoading(true);
+      const authResponse = await apiService.login(credentials);
+      setUser(authResponse.data.user);
+      setUserRoleState(authResponse.data.user.role);
+      await AsyncStorage.setItem(ROLE_STORAGE_KEY, authResponse.data.user.role);
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const register = async (userData: RegisterRequest) => {
+    try {
+      setIsLoading(true);
+      const authResponse = await apiService.register(userData);
+      setUser(authResponse.data.user);
+      setUserRoleState(authResponse.data.user.role);
+      await AsyncStorage.setItem(ROLE_STORAGE_KEY, authResponse.data.user.role);
+    } catch (error) {
+      console.error("Register error:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      await apiService.logout();
+      setUser(null);
+      setUserRoleState(null);
+      await AsyncStorage.removeItem(ROLE_STORAGE_KEY);
+    } catch (error) {
+      console.error("Logout error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -64,9 +129,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const value: AuthContextType = {
+    user,
     userRole,
-    setUserRole,
+    isAuthenticated: !!user,
     isLoading,
+    login,
+    register,
+    logout,
+    setUserRole,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

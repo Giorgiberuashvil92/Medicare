@@ -3,13 +3,19 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
 
 const Header = () => {
   const { getTotalItems } = useCart();
+  const { user, isAuthenticated } = useAuth();
 
   const handleProfilePress = () => {
-    router.push("/screens/profile/profile");
+    if (isAuthenticated) {
+      router.push("/screens/profile/profile");
+    } else {
+      router.push("/screens/auth/login");
+    }
   };
 
   const handleCartPress = () => {
@@ -25,10 +31,10 @@ const Header = () => {
         />
         <View>
           <Text style={{ color: "#171717", fontFamily: "Poppins-Medium" }}>
-            Hello!
+            {isAuthenticated ? "გამარჯობა!" : "მოგესალმებით!"}
           </Text>
           <Text style={{ fontFamily: "Poppins-SemiBold" }}>
-            Lazare Chkhartishvili
+            {isAuthenticated && user ? user.name : "მომხმარებელი"}
           </Text>
         </View>
       </TouchableOpacity>

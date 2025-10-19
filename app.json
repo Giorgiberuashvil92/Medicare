@@ -59,6 +59,9 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "expo-router": {
+      "origin": false
     }
   }
 }

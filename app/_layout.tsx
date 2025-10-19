@@ -2,9 +2,15 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import Toast from "react-native-toast-message";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
+
+// Import Reactotron in development
+if (__DEV__) {
+  require("../ReactotronConfig");
+}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,6 +51,7 @@ export default function RootLayout() {
             <Stack.Screen name="(doctor-tabs)" />
             <Stack.Screen name="screens" />
           </Stack>
+          <Toast />
         </CartProvider>
       </FavoritesProvider>
     </AuthProvider>

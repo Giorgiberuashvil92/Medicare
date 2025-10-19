@@ -3,15 +3,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../contexts/AuthContext";
+import { showToast } from "../../utils/toast";
 
 export default function ProfileScreen() {
+  const { user, logout, isAuthenticated } = useAuth();
+
   const handleResetOnboarding = async () => {
     await AsyncStorage.removeItem("hasCompletedOnboarding");
     router.replace("/screens/auth/onboarding");
@@ -19,6 +24,32 @@ export default function ProfileScreen() {
 
   const handleGoBack = () => {
     router.back();
+  };
+
+  const handleLogout = async () => {
+    Alert.alert(
+      "გასვლა",
+      "დარწმუნებული ხართ რომ გსურთ გასვლა?",
+      [
+        {
+          text: "გაუქმება",
+          style: "cancel",
+        },
+        {
+          text: "გასვლა",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await logout();
+              showToast.auth.logoutSuccess();
+              router.replace("/screens/auth/login");
+            } catch {
+              showToast.auth.logoutError();
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -49,13 +80,25 @@ export default function ProfileScreen() {
           </View>
 
           <View style={styles.nameContainer}>
-            <Text style={styles.userName}>Lazare Chkhartishvili</Text>
+            <Text style={styles.userName}>
+              {user ? user.name : "მომხმარებელი"}
+            </Text>
             <TouchableOpacity style={styles.editButton}>
               <Ionicons name="pencil" size={16} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.userEmail}>lazare.chkhartishvili@gmail.com</Text>
+          <Text style={styles.userEmail}>
+            {user ? user.email : "email@example.com"}
+          </Text>
+          
+          {user && (
+            <View style={styles.roleContainer}>
+              <Text style={styles.roleText}>
+                {user.role === 'doctor' ? 'ექიმი' : 'პაციენტი'}
+              </Text>
+            </View>
+          )}
 
           <View style={styles.separator} />
         </View>
@@ -137,6 +180,21 @@ export default function ProfileScreen() {
             <Text style={styles.menuText}>Invite Friends</Text>
             <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
           </TouchableOpacity>
+
+          {isAuthenticated && (
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={handleLogout}
+            >
+              <View style={styles.menuIconContainer}>
+                <Ionicons name="log-out" size={20} color="#FF3B30" />
+              </View>
+              <Text style={[styles.menuText, { color: "#FF3B30" }]}>
+                გასვლა
+              </Text>
+              <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             style={styles.menuItem}
@@ -245,7 +303,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-Regular",
     color: "#6B7280",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  roleContainer: {
+    backgroundColor: "#06B6D4",
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
     marginBottom: 20,
+  },
+  roleText: {
+    fontSize: 12,
+    fontFamily: "Poppins-Medium",
+    color: "#FFFFFF",
     textAlign: "center",
   },
   separator: {

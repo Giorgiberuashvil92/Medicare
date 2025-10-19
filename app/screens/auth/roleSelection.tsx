@@ -1,4 +1,3 @@
-import { useAuth } from "@/app/contexts/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -10,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../contexts/AuthContext";
 
 type UserRole = "doctor" | "patient";
 
@@ -63,7 +63,7 @@ export default function RoleSelectionScreen() {
                 <Ionicons name="checkmark-circle" size={28} color="#20BEB8" />
               )}
             </View>
-            <Text style={styles.roleTitle}>I'm a Doctor</Text>
+            <Text style={styles.roleTitle}>I&apos;m a Doctor</Text>
             <Text style={styles.roleDescription}>
               Register as healthcare provider
             </Text>
@@ -94,7 +94,7 @@ export default function RoleSelectionScreen() {
                 <Ionicons name="checkmark-circle" size={28} color="#20BEB8" />
               )}
             </View>
-            <Text style={styles.roleTitle}>I'm a Patient</Text>
+            <Text style={styles.roleTitle}>I&apos;m a Patient</Text>
             <Text style={styles.roleDescription}>
               Find doctors and book appointments
             </Text>

@@ -1,4 +1,3 @@
-import { useAuth } from "@/app/contexts/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -13,10 +12,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../contexts/AuthContext";
+import { showToast } from "../../utils/toast";
 
 export default function RegisterScreen() {
-  const { userRole } = useAuth();
+  const { userRole, register } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Common fields
   const [name, setName] = useState("");
@@ -27,23 +29,46 @@ export default function RegisterScreen() {
   const [specialization, setSpecialization] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     // Basic validation
-    if (!name || !email || !password) {
-      alert("Please fill all required fields");
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      showToast.error("გთხოვთ შეავსოთ ყველა სავალდებულო ველი", "შეცდომა");
       return;
     }
 
-    if (userRole === "doctor" && (!specialization || !licenseNumber)) {
-      alert("Please complete all doctor fields");
+    if (userRole === "doctor" && (!specialization.trim() || !licenseNumber.trim())) {
+      showToast.error("გთხოვთ შეავსოთ ყველა ექიმის ველი", "შეცდომა");
       return;
     }
 
-    // Navigate based on role
-    if (userRole === "doctor") {
-      router.replace("/(doctor-tabs)");
-    } else {
-      router.replace("/(tabs)");
+    if (password.length < 6) {
+      showToast.error("პაროლი უნდა იყოს მინიმუმ 6 სიმბოლო", "შეცდომა");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await register({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        role: userRole || "patient",
+      });
+
+      // Show success toast
+      showToast.auth.registerSuccess(name.trim());
+
+      // Navigate based on role
+      if (userRole === "doctor") {
+        router.replace("/(doctor-tabs)");
+      } else {
+        router.replace("/(tabs)");
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "შეცდომა რეგისტრაციისას";
+      showToast.auth.registerError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -203,10 +228,13 @@ export default function RegisterScreen() {
 
               {/* Signup Button */}
               <TouchableOpacity
-                style={styles.signupButton}
+                style={[styles.signupButton, isLoading && styles.signupButtonDisabled]}
                 onPress={handleSignup}
+                disabled={isLoading}
               >
-                <Text style={styles.signupButtonText}>Sign up</Text>
+                <Text style={styles.signupButtonText}>
+                  {isLoading ? "რეგისტრაცია..." : "რეგისტრაცია"}
+                </Text>
               </TouchableOpacity>
 
               {/* Signin Link */}
@@ -312,6 +340,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
+  },
+  signupButtonDisabled: {
+    backgroundColor: "#9CA3AF",
+    opacity: 0.7,
   },
   dividerContainer: {
     flexDirection: "row",
